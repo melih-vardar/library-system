@@ -137,7 +137,7 @@ public class Main {
                     break;
                 case 7:
                     System.out.println("\nÖdünç Aldığınız Kitaplar:");
-                    printBooks(new ArrayList<>(user.getLoanedBooks()));
+                    printBooks(new ArrayList<>(user.getBorrowedBooks()));
                     break;
                 case 8:
                     System.out.println("Mevcut bakiyeniz: " + user.getBalance() + " TL");

@@ -5,23 +5,23 @@ import java.util.Set;
 
 public class User extends Person {
 
-    private Set<Book> loanedBooks;
+    private Set<Book> borrowedBooks;
     private double balance;
     private final Library library;
 
     public User(int id, String name, String surname, int age, double balance, Library library) {
         super(id, name, surname, age, library);
         this.balance = balance;
-        this.loanedBooks = new HashSet<>();
+        this.borrowedBooks = new HashSet<>();
         this.library = library;
     }
 
-    public Set<Book> getLoanedBooks() {
-        return loanedBooks;
+    public Set<Book> getBorrowedBooks() {
+        return borrowedBooks;
     }
 
-    public void setLoanedBooks(Set<Book> loanedBooks) {
-        this.loanedBooks = loanedBooks;
+    public void setBorrowedBooks(Set<Book> borrowedBooks) {
+        this.borrowedBooks = borrowedBooks;
     }
 
     public double getBalance() {
@@ -50,14 +50,14 @@ public class User extends Person {
             return;
         }
 
-        if (loanedBooks.size() + books.size() > 5) {
+        if (borrowedBooks.size() + books.size() > 5) {
             System.out.println("You cannot loan more than 5 books in total");
             return;
         }
 
         for (Book book : books) {
             for (User user : library.getUsers().values()) {
-                if (user.getLoanedBooks().contains(book)) {
+                if (user.getBorrowedBooks().contains(book)) {
                     System.out.println("Book '" + book.getName() + "' is already loaned by user: " + user.getName());
                     return;
                 }
@@ -66,7 +66,7 @@ public class User extends Person {
 
         for (Book book : books) {
             book.setAvailable(false);
-            loanedBooks.add(book);
+            borrowedBooks.add(book);
         }
         
         balance -= totalCost;
@@ -92,7 +92,7 @@ public class User extends Person {
     @Override
     public void returnBooks(List<Book> books) {
         for (Book book : books) {
-            if (!loanedBooks.contains(book)) {
+            if (!borrowedBooks.contains(book)) {
                 System.out.println("You have not loaned the book: " + book.getName());
                 return;
             }
@@ -103,7 +103,7 @@ public class User extends Person {
                 .sum();
 
         for (Book book : books) {
-            loanedBooks.remove(book);
+            borrowedBooks.remove(book);
             book.setAvailable(true);
         }
         

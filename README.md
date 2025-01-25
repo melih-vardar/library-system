@@ -2,6 +2,8 @@
 
 Bu proje, bir kütüphanenin temel işlevlerini yerine getiren bir yönetim sistemidir. Sistem üç farklı kullanıcı tipi (Misafir, Üye ve Admin) için farklı yetkiler ve işlevler sunar.
 
+![Class Diagram](./docs/uml/diagram.png)
+
 ## Özellikler
 
 ### Kitap Yönetimi
