@@ -1,14 +1,18 @@
 public class Book {
 
-    private int id;
+    private static int lastId = 0;
+    private final int id;
     private String name;
     private String author;
     private Category category;
     private boolean available;
     private double unitPrice;
 
-    public Book(int id, String name, String author, Category category, double unitPrice) {
-        this.id = id;
+    Book(Admin creator, String name, String author, Category category, double unitPrice) {
+        if (creator == null) {
+            throw new IllegalArgumentException("Books can only be created by Admin!");
+        }
+        this.id = ++lastId;
         this.name = name;
         this.author = author;
         this.category = category;
@@ -16,14 +20,11 @@ public class Book {
         available = true;
     }
 
+
+    // public getters/setters
     public int getId() {
         return id;
     }
-
-    public void setId(int id) {
-        this.id = id;
-    }
-
 
     public String getName() {
         return name;
@@ -33,7 +34,6 @@ public class Book {
         this.name = name;
     }
 
-
     public String getAuthor() {
         return author;
     }
@@ -41,7 +41,6 @@ public class Book {
     public void setAuthor(String author) {
         this.author = author;
     }
-
 
     public Category getCategory() {
         return category;
@@ -51,7 +50,6 @@ public class Book {
         this.category = category;
     }
 
-
     public boolean isAvailable() {
         return available;
     }
@@ -60,7 +58,6 @@ public class Book {
         this.available = available;
     }
 
-
     public double getUnitPrice() {
         return unitPrice;
     }
@@ -68,6 +65,5 @@ public class Book {
     public void setUnitPrice(double unitPrice) {
         this.unitPrice = unitPrice;
     }
-
 
 }

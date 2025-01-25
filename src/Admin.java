@@ -3,8 +3,8 @@ import java.util.List;
 public class Admin extends Person {
     private final Library library;
 
-    public Admin(int id, String name, String surname, int age, Library library) {
-        super(id, name, surname, age, library);
+    public Admin(String tckno, String name, String surname, int age, Library library) {
+        super(tckno, name, surname, age, library);
         this.library = library;
     }
 
@@ -70,5 +70,87 @@ public class Admin extends Person {
     @Override
     public List<Book> findBooksByCategory(String categoryName) {
         return super.findBooksByCategory(categoryName);
+    }
+
+    // User yönetimi için metodları güncelliyoruz
+    public User createUser(String tckno, String name, String surname, int age, double initialBalance) {
+        // TC no kontrolü
+        for (User existingUser : library.getUsers().values()) {
+            if (existingUser.getTckno().equals(tckno)) {
+                System.out.println("Bu TC Kimlik No'ya sahip bir kullanıcı zaten mevcut!");
+                return null;
+            }
+        }
+
+        try {
+            User user = new User(this, tckno, name, surname, age, initialBalance, library);
+            addUser(user);
+            return user;
+        } catch (IllegalArgumentException e) {
+            System.out.println("Hata: " + e.getMessage());
+            return null;
+        }
+    }
+
+    public void addUser(User user) {
+        // TC no kontrolü
+        for (User existingUser : library.getUsers().values()) {
+            if (existingUser.getTckno().equals(user.getTckno())) {
+                System.out.println("Bu TC Kimlik No'ya sahip bir kullanıcı zaten mevcut!");
+                return;
+            }
+        }
+
+        if (library.getUsers().containsKey(user.getId())) {
+            System.out.println("User already exists");
+        } else {
+            library.getUsers().put(user.getId(), user);
+            System.out.println("User added to library successfully. User name: " + user.getName());
+        }
+    }
+
+    public void removeUser(User user) {
+        if (library.getUsers().containsKey(user.getId())) {
+            library.getUsers().remove(user.getId());
+            System.out.println("User removed successfully");
+        } else {
+            System.out.println("User does not exist");
+        }
+    }
+
+    public void updateUser(User user) {
+        if (library.getUsers().containsKey(user.getId())) {
+            library.getUsers().put(user.getId(), user);
+            System.out.println("User updated successfully");
+        } else {
+            System.out.println("User not found");
+        }
+    }
+
+    // Güncellenmiş createBook metodu
+    public Book createBook(String name, String author, String categoryName, double unitPrice) {
+        // Önce kategoriyi bulalım veya oluşturalım
+        Category category = null;
+        for (Category existingCategory : library.getCategories()) {
+            if (existingCategory.getName().equalsIgnoreCase(categoryName)) {
+                category = existingCategory;
+                break;
+            }
+        }
+        
+        // Kategori yoksa oluşturalım
+        if (category == null) {
+            category = createCategory(categoryName);
+        }
+
+        Book book = new Book(this, name, author, category, unitPrice);
+        addBook(book);
+        return book;
+    }
+
+    public Category createCategory(String name) {
+        Category category = new Category(this, name);
+        addCategory(category);
+        return category;
     }
 }

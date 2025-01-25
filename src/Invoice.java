@@ -3,15 +3,16 @@ import java.util.List;
 import java.time.LocalDateTime;
 
 public class Invoice {
-    private int id;
+    private static int lastId = 0;
+    private final int id;
     private double amount;
     private List<Book> books;
     private User user;
     private LocalDateTime date;
     private boolean isReturn; // iade faturası mı yoksa ödünç alma faturası mı
 
-    public Invoice(int id, List<Book> books, User user, boolean isReturn, double amount) {
-        this.id = id;
+    public Invoice(List<Book> books, User user, boolean isReturn, double amount) {
+        this.id = ++lastId;
         this.books = new ArrayList<>(books);
         this.user = user;
         this.date = LocalDateTime.now();

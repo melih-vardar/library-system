@@ -9,8 +9,12 @@ public class User extends Person {
     private double balance;
     private final Library library;
 
-    public User(int id, String name, String surname, int age, double balance, Library library) {
-        super(id, name, surname, age, library);
+    // Package-private friend constructor
+    User(Admin creator, String tckno, String name, String surname, int age, double balance, Library library) {
+        super(tckno, name, surname, age, library);
+        if (creator == null) {
+            throw new IllegalArgumentException("Users can only be created by Admin!");
+        }
         this.balance = balance;
         this.borrowedBooks = new HashSet<>();
         this.library = library;
@@ -72,7 +76,6 @@ public class User extends Person {
         balance -= totalCost;
 
         Invoice invoice = new Invoice(
-            library.getInvoices().size() + 1,
             books,
             this,
             false,
@@ -110,7 +113,6 @@ public class User extends Person {
         balance += totalRefund;
 
         Invoice invoice = new Invoice(
-            library.getInvoices().size() + 1,
             books,
             this,
             true,

@@ -1,10 +1,20 @@
 public class Category {
 
-    private int id;
+    private static int lastId = 0;
+    private final int id;
     private String name;
 
-    public Category(String name) {
+    // Package-private friend constructor
+    Category(Admin creator, String name) {
+        if (creator == null) {
+            throw new IllegalArgumentException("Categories can only be created by Admin!");
+        }
+        this.id = ++lastId;
         this.name = name;
+    }
+
+    public int getId() {
+        return id;
     }
 
     public String getName() {

@@ -40,7 +40,8 @@ public class Main {
     }
 
     private static void handleGuestOperations(Scanner scanner, Library library) {
-        Person guest = new Person(0, "Misafir", "", 0, library) {};
+        Guest guest = new Guest(library);
+        
         while (true) {
             System.out.println("\n=== Misafir İşlemleri ===");
             System.out.println("1. ID ile kitap ara");
@@ -86,11 +87,17 @@ public class Main {
     }
 
     private static void handleUserOperations(Scanner scanner, Library library) {
-        System.out.print("Kullanıcı ID: ");
-        int userId = scanner.nextInt();
-        scanner.nextLine();
+        System.out.print("TC Kimlik No: ");
+        String tckno = scanner.nextLine();
+        
+        User user = null;
+        for (User u : library.getUsers().values()) {
+            if (u.getTckno().equals(tckno)) {
+                user = u;
+                break;
+            }
+        }
 
-        User user = library.getUsers().get(userId);
         if (user == null) {
             System.out.println("Kullanıcı bulunamadı!");
             return;
@@ -143,13 +150,13 @@ public class Main {
                     System.out.println("Mevcut bakiyeniz: " + user.getBalance() + " TL");
                     break;
                 default:
-                    handleGuestOperations(scanner, library);
+                    System.out.println("Geçersiz seçim!");
             }
         }
     }
 
     private static void handleAdminOperations(Scanner scanner, Library library) {
-        Admin admin = new Admin(0, "Admin", "", 0, library);
+        Admin admin = new Admin("99999999999", "Admin", "", 0, library);
         
         while (true) {
             System.out.println("\n=== Admin İşlemleri ===");
@@ -169,9 +176,6 @@ public class Main {
 
             switch (choice) {
                 case 1:
-                    System.out.print("Kitap ID: ");
-                    int id = scanner.nextInt();
-                    scanner.nextLine();
                     System.out.print("Kitap adı: ");
                     String name = scanner.nextLine();
                     System.out.print("Yazar: ");
@@ -181,13 +185,11 @@ public class Main {
                     System.out.print("Fiyat: ");
                     double price = scanner.nextDouble();
                     
-                    Category category = new Category(categoryName);
-                    Book newBook = new Book(id, name, author, category, price);
-                    admin.addBook(newBook);
+                    admin.createBook(name, author, categoryName, price);
                     break;
                 case 2:
                     System.out.print("Güncellenecek kitabın ID'si: ");
-                    id = scanner.nextInt();
+                    int id = scanner.nextInt();
                     scanner.nextLine();
                     Book existingBook = library.getBooks().get(id);
                     if (existingBook != null) {
@@ -221,7 +223,7 @@ public class Main {
                 case 4:
                     System.out.print("Kategori adı: ");
                     categoryName = scanner.nextLine();
-                    admin.addCategory(new Category(categoryName));
+                    admin.createCategory(categoryName);
                     break;
                 case 5:
                     System.out.println("\nTüm Kitaplar:");
@@ -256,24 +258,12 @@ public class Main {
     }
 
     private static void initializeLibrary(Library library) {
-        Category fiction = new Category("Kurgu");
-        Category science = new Category("Bilim");
-        Category history = new Category("Tarih");
+        Admin admin = new Admin("99999999999", "Admin", "", 0, library);
         
-        library.getCategories().add(fiction);
-        library.getCategories().add(science);
-        library.getCategories().add(history);
+        admin.createBook("1984", "George Orwell", "Kurgu", 25.0);
+        admin.createBook("Kozmos", "Carl Sagan", "Bilim", 35.0);
+        admin.createBook("Nutuk", "Mustafa Kemal Atatürk", "Tarih", 40.0);
 
-        Book book1 = new Book(1, "1984", "George Orwell", fiction, 25.0);
-        Book book2 = new Book(2, "Kozmos", "Carl Sagan", science, 35.0);
-        Book book3 = new Book(3, "Nutuk", "Mustafa Kemal Atatürk", history, 40.0);
-        
-        library.getBooks().put(book1.getId(), book1);
-        library.getBooks().put(book2.getId(), book2);
-        library.getBooks().put(book3.getId(), book3);
-
-        // Örnek kullanıcı
-        User user1 = new User(1, "Ahmet", "Yılmaz", 25, 100.0, library);
-        library.getUsers().put(user1.getId(), user1);
+        admin.createUser("12345678901", "Ahmet", "Yılmaz", 25, 100.0);
     }
 }

@@ -3,14 +3,20 @@ import java.util.List;
 
 public abstract class Person implements IBorrow {
 
+    private static int lastId = 0;
     private final int id;
+    private final String tckno;
     private String name;
     private String surname;
     private int age;
     protected Library library;  // library'i protected yapıyoruz ki alt sınıflar erişebilsin
 
-    public Person(int id, String name, String surname, int age, Library library) {
-        this.id = id;
+    public Person(String tckno, String name, String surname, int age, Library library) {
+        if (tckno == null || tckno.length() != 11 || !tckno.matches("\\d+")) {
+            throw new IllegalArgumentException("TC Kimlik No 11 haneli rakamlardan oluşmalıdır!");
+        }
+        this.id = ++lastId;
+        this.tckno = tckno;
         this.name = name;
         this.surname = surname;
         this.age = age;
@@ -19,6 +25,10 @@ public abstract class Person implements IBorrow {
 
     public int getId() {
         return id;
+    }
+
+    public String getTckno() {
+        return tckno;
     }
 
     public void setName(String name) {
