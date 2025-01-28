@@ -204,6 +204,7 @@ public class Main {
             System.out.println("5. Tüm kitapları listele");
             System.out.println("6. Tüm kategorileri listele");
             System.out.println("7. Yeni admin ekle");
+            System.out.println("8. Admin sil");
             System.out.println("0. Ana menüye dön");
             System.out.print("Seçiminiz: ");
 
@@ -285,7 +286,18 @@ public class Main {
                     scanner.nextLine();
                     
                     admin.createAdmin(newTckno, newName, newSurname, newAge);
+                    System.out.println(library.getAdmins());
                     break;
+                case 8:
+                    System.out.println("Silinecek adminin TC Kimlik No'su: ");
+                    String tcknoToDelete = scanner.nextLine();
+                    Admin adminToDelete = library.getAdmins().get(tcknoToDelete);
+                    if (adminToDelete != null) {
+                        admin.removeAdmin(adminToDelete);
+                    } else {
+                        System.out.println("Admin bulunamadı!");
+                    }
+                    System.out.println(library.getAdmins());
                 default:
                     System.out.println("Geçersiz seçim!");
             }
@@ -317,5 +329,7 @@ public class Main {
         admin.createBook("Nutuk", "Mustafa Kemal Atatürk", "Tarih", 40.0);
 
         admin.createUser("12345678901", "Ahmet", "Yılmaz", 25, 100.0);
+
     }
+
 }

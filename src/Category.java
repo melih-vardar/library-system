@@ -4,7 +4,6 @@ public class Category {
     private final int id;
     private String name;
 
-    // Package-private friend constructor
     Category(Admin creator, String name) {
         this.id = ++lastId;
         

@@ -7,10 +7,10 @@ public class Admin extends Person {
 
     public void addCategory(Category category) {
         if (getLibrary().getCategories().contains(category)) {
-            System.out.println("Category already exists");
+            System.out.println("Bu kategori zaten mevcut");
         } else {
             getLibrary().getCategories().add(category);
-            System.out.println("Category added to library successfully. Category name: " + category.getName());
+            System.out.println("Kategori kütüphaneye başarıyla eklendi. Kategori adı: " + category.getName());
         }
     }
 
@@ -18,16 +18,16 @@ public class Admin extends Person {
         if(getLibrary().getCategories().contains(category)) {
             getLibrary().getCategories().remove(category);
         } else {
-            System.out.println("Category does not exist");
+            System.out.println("Böyle bir kategori bulunamadı");
         }
     }
 
     public void addBook(Book book) {
         if(getLibrary().getBooks().containsKey(book.getId())) {
-            System.out.println("Book already exists");
+            System.out.println("Kitap zaten mevcut");
         } else {
             getLibrary().getBooks().put(book.getId(), book);
-            System.out.println("Book added to library successfully. Book name: " + book.getName());
+            System.out.println("Kitap kütüphaneye başarıyla eklendi. Kitap adı: " + book.getName());
         }
     }
 
@@ -35,16 +35,16 @@ public class Admin extends Person {
         if(getLibrary().getBooks().containsKey(book.getId())) {
             getLibrary().getBooks().remove(book.getId());
         } else {
-            System.out.println("Book does not exist");
+            System.out.println("Kitap bulunamadı");
         }
     }
 
     public void updateBook(Book book) {
         if(getLibrary().getBooks().containsKey(book.getId())) {
             getLibrary().getBooks().put(book.getId(), book);
-            System.out.println("Book updated successfully");
+            System.out.println("Kitap başarıyla güncellendi");
         } else {
-            System.out.println("Book not found");
+            System.out.println("Kitap bulunamadı");
         }
     }
 
@@ -82,36 +82,30 @@ public class Admin extends Person {
     }
 
     public void addUser(User user) {
-        for (User existingUser : getLibrary().getUsers().values()) {
-            if (existingUser.getTckno().equals(user.getTckno())) {
-                System.out.println("Bu TC Kimlik No'ya sahip bir kullanıcı zaten mevcut!");
-                return;
-            }
-        }
 
         if (getLibrary().getUsers().containsKey(user.getId())) {
-            System.out.println("User already exists");
+            System.out.println("Kullanıcı zaten mevcut");
         } else {
             getLibrary().getUsers().put(user.getId(), user);
-            System.out.println("User added to library successfully. User name: " + user.getName());
+            System.out.println("Kullanıcı kütüphaneye başarıyla eklendi. Kullanıcı adı: " + user.getName());
         }
     }
 
     public void removeUser(User user) {
         if (getLibrary().getUsers().containsKey(user.getId())) {
             getLibrary().getUsers().remove(user.getId());
-            System.out.println("User removed successfully");
+            System.out.println("Kullanıcı başarıyla silindi");
         } else {
-            System.out.println("User does not exist");
+            System.out.println("Kullanıcı bulunamadı");
         }
     }
 
     public void updateUser(User user) {
         if (getLibrary().getUsers().containsKey(user.getId())) {
             getLibrary().getUsers().put(user.getId(), user);
-            System.out.println("User updated successfully");
+            System.out.println("Kullanıcı başarıyla güncellendi");
         } else {
-            System.out.println("User not found");
+            System.out.println("Kullanıcı bulunamadı");
         }
     }
 
@@ -140,7 +134,6 @@ public class Admin extends Person {
     }
 
     public Admin createAdmin(String tckno, String name, String surname, int age) {
-        // TC no kontrolü
         for (Admin existingAdmin : getLibrary().getAdmins().values()) {
             if (existingAdmin.getTckno().equals(tckno)) {
                 System.out.println("Bu TC Kimlik No'ya sahip bir admin zaten mevcut!");
@@ -158,7 +151,7 @@ public class Admin extends Person {
             System.out.println("Admin already exists");
         } else {
             getLibrary().getAdmins().put(admin.getId(), admin);
-            System.out.println("Admin added successfully. Admin name: " + admin.getName());
+            System.out.println("Admin başarıyla eklendi. Admin adı: " + admin.getName());
         }
     }
 
@@ -170,9 +163,9 @@ public class Admin extends Person {
         
         if (getLibrary().getAdmins().containsKey(admin.getId())) {
             getLibrary().getAdmins().remove(admin.getId());
-            System.out.println("Admin removed successfully");
+            System.out.println("Admin başarıyla silindi");
         } else {
-            System.out.println("Admin does not exist");
+            System.out.println("Böyle bir admin bulunamadı");
         }
     }
 }
