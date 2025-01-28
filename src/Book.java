@@ -77,4 +77,26 @@ public class Book {
         this.unitPrice = unitPrice;
     }
 
+
+// hashcode ezmek gerekiyor kitap eşitliği id üzerinden yapılacak
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Book) {
+            return ((Book) obj).id == this.id;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "Kitap Adı: " + name +
+               "\nYazar: " + author +
+               "\nKategori: " + category.getName() +
+               "\nFiyat: " + unitPrice + " TL";
+    }
 }

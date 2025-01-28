@@ -60,4 +60,6 @@ public class Library {
     public void setAdmins(Map<Integer, Admin> admins) {
         this.admins = admins;
     }
+
+    // categoryService, bookservice tarzı sınıflar oluşturularak SOLID prensiplerine uygun yapabiliriz.
 }

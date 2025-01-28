@@ -131,4 +131,19 @@ public class Admin extends Person {
             System.out.println("Böyle bir admin bulunamadı");
         }
     }
+
+    @Override
+    public int hashCode() {
+        return super.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return super.equals(obj);
+    }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

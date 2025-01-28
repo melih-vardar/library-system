@@ -149,4 +149,30 @@ public abstract class Person implements IBorrow {
     public void returnBooks(List<Book> books) {
         System.out.println("Bu işlemi gerçekleştirmek için kütüphaneye üye olmalısınız.");
     }
+
+    // equals&hashcode
+    @Override
+    public int hashCode() {
+        return id;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Person) {
+            return ((Person) obj).id == this.id;
+        }
+        return false;
+    }
+
+    @Override
+    public String toString() {
+        return "ID: " + id + "\n" +
+               "TC Kimlik No: " + tckno + "\n" +
+               "Kullanıcı Adı: " + username + "\n" +
+               "Şifre: " + password + "\n" +
+               "İsim: " + name + "\n" +
+               "Soyisim: " + surname + "\n" +
+               "Yaş: " + age + "\n";
+    }
+
 }
