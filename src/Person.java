@@ -15,12 +15,19 @@ public abstract class Person implements IBorrow {
         this.id = ++lastId;
         
         if (tckno == null || tckno.length() != 11 || !tckno.matches("\\d+")) {
-            System.out.println("TC Kimlik No 11 haneli rakamlardan oluşmalıdır!");
-            return;
+            throw new IllegalArgumentException("TC Kimlik No 11 haneli rakamlardan oluşmalıdır!");
+        }
+        if (name == null || name.trim().isEmpty()) {
+            throw new IllegalArgumentException("İsim boş olamaz!");
+        }
+        if (surname == null || surname.trim().isEmpty()) {
+            throw new IllegalArgumentException("Soyisim boş olamaz!");
+        }
+        if (age <= 0) {
+            throw new IllegalArgumentException("Yaş 0'dan büyük olmalıdır!");
         }
         if (library == null) {
-            System.out.println("Library parametresi null olamaz!");
-            return;
+            throw new IllegalArgumentException("Library parametresi null olamaz!");
         }
         
         this.tckno = tckno;

@@ -12,12 +12,10 @@ public class User extends Person {
         super(tckno, name, surname, age, library);
         
         if (creator == null) {
-            System.out.println("Kullanıcılar sadece Admin tarafından oluşturulabilir!");
-            return;
+            throw new IllegalArgumentException("Kullanıcılar sadece Admin tarafından oluşturulabilir!");
         }
         if (balance < 0) {
-            System.out.println("Bakiye negatif olamaz!");
-            return;
+            throw new IllegalArgumentException("Bakiye negatif olamaz!");
         }
 
         this.borrowedBooks = new HashSet<>();
@@ -49,36 +47,29 @@ public class User extends Person {
 
     @Override
     public void borrowBooks(List<Book> books) {
+        if (books == null || books.isEmpty()) {
+            throw new IllegalArgumentException("Kitap listesi boş olamaz!");
+        }
+
         double totalCost = 0.0;
         for(Book book : books) {
+            if (book == null) {
+                throw new IllegalArgumentException("Kitap nesnesi null olamaz!");
+            }
             totalCost += book.getUnitPrice();
         }
 
         if (balance < totalCost) {
-            System.out.println("Bu kitapları almak için yeterli bakiyeniz yok.");
-            return;
+            throw new IllegalStateException("Bu kitapları almak için yeterli bakiyeniz yok.");
         }
 
         if (borrowedBooks.size() + books.size() > 5) {
-            System.out.println("En fazla 5 kitap ödünç alabilirsiniz.");
-            return;
+            throw new IllegalStateException("En fazla 5 kitap ödünç alabilirsiniz.");
         }
-
-        // User bilgisi paylaşılmamalı
-
-//        for (Book book : books) {
-//            for (User user : library.getUsers().values()) {
-//                if (user.getBorrowedBooks().contains(book)) {
-//                    System.out.println("Book '" + book.getName() + "' is already loaned by user: " + user.getName());
-//                    return;
-//                }
-//            }
-//        }
 
         for(Book book : books) {
             if (!book.isAvailable()) {
-                System.out.println("Kitap şu anda mevcut değil: " + book.getName());
-                return;
+                throw new IllegalStateException("Kitap şu anda mevcut değil: " + book.getName());
             }
         }
 
@@ -90,10 +81,10 @@ public class User extends Person {
         balance -= totalCost;
 
         Invoice invoice = new Invoice(
-            books,
-            this,
-            false,
-            totalCost
+                books,
+                this,
+                false,
+                totalCost
         );
         getLibrary().getInvoices().add(invoice);
         System.out.println("Fatura oluşturuldu:\n" + invoice);

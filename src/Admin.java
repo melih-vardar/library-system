@@ -69,16 +69,20 @@ public class Admin extends Person {
     }
 
     public User createUser(String tckno, String name, String surname, int age, double initialBalance) {
-        for (User existingUser : getLibrary().getUsers().values()) {
-            if (existingUser.getTckno().equals(tckno)) {
-                System.out.println("Bu TC Kimlik No'ya sahip bir kullanıcı zaten mevcut!");
-                return null;
+        try {
+            for (User existingUser : getLibrary().getUsers().values()) {
+                if (existingUser.getTckno().equals(tckno)) {
+                    throw new IllegalStateException("Bu TC Kimlik No'ya sahip bir kullanıcı zaten mevcut!");
+                }
             }
-        }
 
-        User user = new User(this, tckno, name, surname, age, initialBalance, getLibrary());
-        addUser(user);
-        return user;
+            User user = new User(this, tckno, name, surname, age, initialBalance, getLibrary());
+            addUser(user);
+            return user;
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     public void addUser(User user) {
@@ -134,16 +138,20 @@ public class Admin extends Person {
     }
 
     public Admin createAdmin(String tckno, String name, String surname, int age) {
-        for (Admin existingAdmin : getLibrary().getAdmins().values()) {
-            if (existingAdmin.getTckno().equals(tckno)) {
-                System.out.println("Bu TC Kimlik No'ya sahip bir admin zaten mevcut!");
-                return null;
+        try {
+            for (Admin existingAdmin : getLibrary().getAdmins().values()) {
+                if (existingAdmin.getTckno().equals(tckno)) {
+                    throw new IllegalStateException("Bu TC Kimlik No'ya sahip bir admin zaten mevcut!");
+                }
             }
-        }
 
-        Admin newAdmin = new Admin(tckno, name, surname, age, getLibrary());
-        addAdmin(newAdmin);
-        return newAdmin;
+            Admin newAdmin = new Admin(tckno, name, surname, age, getLibrary());
+            addAdmin(newAdmin);
+            return newAdmin;
+        } catch (IllegalArgumentException | IllegalStateException e) {
+            System.out.println(e.getMessage());
+            return null;
+        }
     }
 
     private void addAdmin(Admin admin) {

@@ -12,20 +12,16 @@ public class Book {
         this.id = ++lastId;
         
         if (creator == null) {
-            System.out.println("Kitaplar sadece Admin tarafından oluşturulabilir!");
-            return;
+            throw new IllegalArgumentException("Kitaplar sadece Admin tarafından oluşturulabilir!");
         }
         if (name == null || name.trim().isEmpty()) {
-            System.out.println("Kitap adı boş olamaz!");
-            return;
+            throw new IllegalArgumentException("Kitap adı boş olamaz!");
         }
         if (category == null) {
-            System.out.println("Kategori boş olamaz!");
-            return;
+            throw new IllegalArgumentException("Kategori boş olamaz!");
         }
         if (unitPrice < 0) {
-            System.out.println("Fiyat negatif olamaz!");
-            return;
+            throw new IllegalArgumentException("Fiyat negatif olamaz!");
         }
 
         this.name = name;
