@@ -5,17 +5,24 @@ public abstract class Person implements IBorrow {
 
     private static int lastId = 0;
     private final int id;
-    private final String tckno;
+    private String tckno;
     private String name;
     private String surname;
     private int age;
     protected Library library;  // library'i protected yapıyoruz ki alt sınıflar erişebilsin
 
     public Person(String tckno, String name, String surname, int age, Library library) {
-        if (tckno == null || tckno.length() != 11 || !tckno.matches("\\d+")) {
-            throw new IllegalArgumentException("TC Kimlik No 11 haneli rakamlardan oluşmalıdır!");
-        }
         this.id = ++lastId;
+        
+        if (tckno == null || tckno.length() != 11 || !tckno.matches("\\d+")) {
+            System.out.println("TC Kimlik No 11 haneli rakamlardan oluşmalıdır!");
+            return;
+        }
+        if (library == null) {
+            System.out.println("Library parametresi null olamaz!");
+            return;
+        }
+        
         this.tckno = tckno;
         this.name = name;
         this.surname = surname;
@@ -94,7 +101,6 @@ public abstract class Person implements IBorrow {
         return foundBooks;
     }
 
-    // IBorrow interface'inin default implementasyonları
     @Override
     public void borrowBook(Book book) {
         System.out.println("Bu işlemi gerçekleştirmek için kütüphaneye üye olmalısınız.");

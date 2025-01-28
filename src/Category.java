@@ -6,10 +6,17 @@ public class Category {
 
     // Package-private friend constructor
     Category(Admin creator, String name) {
-        if (creator == null) {
-            throw new IllegalArgumentException("Categories can only be created by Admin!");
-        }
         this.id = ++lastId;
+        
+        if (creator == null) {
+            System.out.println("Kategoriler sadece Admin tarafından oluşturulabilir!");
+            return;
+        }
+        if (name == null || name.trim().isEmpty()) {
+            System.out.println("Kategori adı boş olamaz!");
+            return;
+        }
+
         this.name = name;
     }
 

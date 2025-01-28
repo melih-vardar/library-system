@@ -122,10 +122,33 @@ public class Main {
             if (choice == 0) break;
 
             switch (choice) {
+                case 1:
+                    System.out.print("Kitap ID: ");
+                    int id = scanner.nextInt();
+                    Book book = user.findBookById(id);
+                    if (book != null) {
+                        printBooks(List.of(book));
+                    }
+                    break;
+                case 2:
+                    System.out.print("Kitap adı: ");
+                    String name = scanner.nextLine();
+                    printBooks(user.findBooksByName(name));
+                    break;
+                case 3:
+                    System.out.print("Yazar adı: ");
+                    String author = scanner.nextLine();
+                    printBooks(user.findBooksByAuthor(author));
+                    break;
+                case 4:
+                    System.out.print("Kategori adı: ");
+                    String category = scanner.nextLine();
+                    printBooks(user.findBooksByCategory(category));
+                    break;
                 case 5:
                     System.out.print("Ödünç almak istediğiniz kitabın ID'si: ");
                     int bookId = scanner.nextInt();
-                    Book book = library.getBooks().get(bookId);
+                    book = library.getBooks().get(bookId);
                     if (book != null) {
                         user.borrowBook(book);
                     } else {
@@ -156,7 +179,21 @@ public class Main {
     }
 
     private static void handleAdminOperations(Scanner scanner, Library library) {
-        Admin admin = new Admin("99999999999", "Admin", "", 0, library);
+        System.out.print("TC Kimlik No: ");
+        String tckno = scanner.nextLine();
+        
+        Admin admin = null;
+        for (Admin a : library.getAdmins().values()) {
+            if (a.getTckno().equals(tckno)) {
+                admin = a;
+                break;
+            }
+        }
+
+        if (admin == null) {
+            System.out.println("Admin bulunamadı!");
+            return;
+        }
         
         while (true) {
             System.out.println("\n=== Admin İşlemleri ===");
@@ -166,6 +203,7 @@ public class Main {
             System.out.println("4. Yeni kategori ekle");
             System.out.println("5. Tüm kitapları listele");
             System.out.println("6. Tüm kategorileri listele");
+            System.out.println("7. Yeni admin ekle");
             System.out.println("0. Ana menüye dön");
             System.out.print("Seçiminiz: ");
 
@@ -193,15 +231,15 @@ public class Main {
                     scanner.nextLine();
                     Book existingBook = library.getBooks().get(id);
                     if (existingBook != null) {
-                        System.out.print("Yeni kitap adı (Enter ile geç): ");
+                        System.out.print("Yeni kitap adı: ");
                         name = scanner.nextLine();
                         if (!name.isEmpty()) existingBook.setName(name);
                         
-                        System.out.print("Yeni yazar (Enter ile geç): ");
+                        System.out.print("Yeni yazar: ");
                         author = scanner.nextLine();
                         if (!author.isEmpty()) existingBook.setAuthor(author);
                         
-                        System.out.print("Yeni fiyat (0 ile geç): ");
+                        System.out.print("Yeni fiyat: ");
                         price = scanner.nextDouble();
                         if (price > 0) existingBook.setUnitPrice(price);
                         
@@ -235,6 +273,19 @@ public class Main {
                         System.out.println("- " + cat.getName());
                     }
                     break;
+                case 7:
+                    System.out.print("TC Kimlik No: ");
+                    String newTckno = scanner.nextLine();
+                    System.out.print("Ad: ");
+                    String newName = scanner.nextLine();
+                    System.out.print("Soyad: ");
+                    String newSurname = scanner.nextLine();
+                    System.out.print("Yaş: ");
+                    int newAge = scanner.nextInt();
+                    scanner.nextLine();
+                    
+                    admin.createAdmin(newTckno, newName, newSurname, newAge);
+                    break;
                 default:
                     System.out.println("Geçersiz seçim!");
             }
@@ -258,7 +309,8 @@ public class Main {
     }
 
     private static void initializeLibrary(Library library) {
-        Admin admin = new Admin("99999999999", "Admin", "", 0, library);
+        Admin admin = new Admin("99999999999", "Admin", "Admin", 30, library);
+        library.getAdmins().put(admin.getId(), admin);
         
         admin.createBook("1984", "George Orwell", "Kurgu", 25.0);
         admin.createBook("Kozmos", "Carl Sagan", "Bilim", 35.0);

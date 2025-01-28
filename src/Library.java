@@ -8,6 +8,7 @@ public class Library {
     private Map<Integer, Book> books;
     private List<Category> categories;
     private Map<Integer, User> users;
+    private Map<Integer, Admin> admins;
     private List<Invoice> invoices;
 
 
@@ -16,6 +17,7 @@ public class Library {
         books = new HashMap<>();
         categories = new ArrayList<>();
         users = new HashMap<>();
+        admins = new HashMap<>();
         invoices = new ArrayList<>();
     }
 
@@ -49,5 +51,13 @@ public class Library {
 
     public void setInvoices(List<Invoice> invoices) {
         this.invoices = invoices;
+    }
+
+    public Map<Integer, Admin> getAdmins() {
+        return admins;
+    }
+
+    public void setAdmins(Map<Integer, Admin> admins) {
+        this.admins = admins;
     }
 }

@@ -1,11 +1,8 @@
 import java.util.List;
 
 public class Admin extends Person {
-    private final Library library;
-
     public Admin(String tckno, String name, String surname, int age, Library library) {
         super(tckno, name, surname, age, library);
-        this.library = library;
     }
 
     public void addCategory(Category category) {
@@ -51,7 +48,6 @@ public class Admin extends Person {
         }
     }
 
-    // Admin için özel arama metodları - Person'dan miras alınanları kullanacak
     @Override
     public Book findBookById(int id) {
         return super.findBookById(id);
@@ -72,7 +68,6 @@ public class Admin extends Person {
         return super.findBooksByCategory(categoryName);
     }
 
-    // User yönetimi için metodları güncelliyoruz
     public User createUser(String tckno, String name, String surname, int age, double initialBalance) {
         // TC no kontrolü
         for (User existingUser : library.getUsers().values()) {
@@ -82,18 +77,12 @@ public class Admin extends Person {
             }
         }
 
-        try {
-            User user = new User(this, tckno, name, surname, age, initialBalance, library);
-            addUser(user);
-            return user;
-        } catch (IllegalArgumentException e) {
-            System.out.println("Hata: " + e.getMessage());
-            return null;
-        }
+        User user = new User(this, tckno, name, surname, age, initialBalance, library);
+        addUser(user);
+        return user;
     }
 
     public void addUser(User user) {
-        // TC no kontrolü
         for (User existingUser : library.getUsers().values()) {
             if (existingUser.getTckno().equals(user.getTckno())) {
                 System.out.println("Bu TC Kimlik No'ya sahip bir kullanıcı zaten mevcut!");
@@ -127,9 +116,7 @@ public class Admin extends Person {
         }
     }
 
-    // Güncellenmiş createBook metodu
     public Book createBook(String name, String author, String categoryName, double unitPrice) {
-        // Önce kategoriyi bulalım veya oluşturalım
         Category category = null;
         for (Category existingCategory : library.getCategories()) {
             if (existingCategory.getName().equalsIgnoreCase(categoryName)) {
@@ -138,7 +125,6 @@ public class Admin extends Person {
             }
         }
         
-        // Kategori yoksa oluşturalım
         if (category == null) {
             category = createCategory(categoryName);
         }
@@ -152,5 +138,42 @@ public class Admin extends Person {
         Category category = new Category(this, name);
         addCategory(category);
         return category;
+    }
+
+    public Admin createAdmin(String tckno, String name, String surname, int age) {
+        // TC no kontrolü
+        for (Admin existingAdmin : library.getAdmins().values()) {
+            if (existingAdmin.getTckno().equals(tckno)) {
+                System.out.println("Bu TC Kimlik No'ya sahip bir admin zaten mevcut!");
+                return null;
+            }
+        }
+
+        Admin newAdmin = new Admin(tckno, name, surname, age, library);
+        addAdmin(newAdmin);
+        return newAdmin;
+    }
+
+    private void addAdmin(Admin admin) {
+        if (library.getAdmins().containsKey(admin.getId())) {
+            System.out.println("Admin already exists");
+        } else {
+            library.getAdmins().put(admin.getId(), admin);
+            System.out.println("Admin added successfully. Admin name: " + admin.getName());
+        }
+    }
+
+    public void removeAdmin(Admin admin) {
+        if (library.getAdmins().size() <= 1) {
+            System.out.println("Son admin silinemez!");
+            return;
+        }
+        
+        if (library.getAdmins().containsKey(admin.getId())) {
+            library.getAdmins().remove(admin.getId());
+            System.out.println("Admin removed successfully");
+        } else {
+            System.out.println("Admin does not exist");
+        }
     }
 }

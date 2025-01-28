@@ -7,17 +7,22 @@ public class User extends Person {
 
     private Set<Book> borrowedBooks;
     private double balance;
-    private final Library library;
 
     // Package-private friend constructor
     User(Admin creator, String tckno, String name, String surname, int age, double balance, Library library) {
         super(tckno, name, surname, age, library);
+        
         if (creator == null) {
-            throw new IllegalArgumentException("Users can only be created by Admin!");
+            System.out.println("Kullanıcılar sadece Admin tarafından oluşturulabilir!");
+            return;
         }
-        this.balance = balance;
+        if (balance < 0) {
+            System.out.println("Bakiye negatif olamaz!");
+            return;
+        }
+
         this.borrowedBooks = new HashSet<>();
-        this.library = library;
+        this.balance = balance;
     }
 
     public Set<Book> getBorrowedBooks() {
@@ -45,26 +50,36 @@ public class User extends Person {
 
     @Override
     public void borrowBooks(List<Book> books) {
-        double totalCost = books.stream()
-                .mapToDouble(book -> book.getUnitPrice())
-                .sum();
+        double totalCost = 0.0;
+        for(Book book : books) {
+            totalCost += book.getUnitPrice();
+        }
 
         if (balance < totalCost) {
-            System.out.println("You do not have enough balance to loan these books");
+            System.out.println("Bu kitapları almak için yeterli bakiyeniz yok.");
             return;
         }
 
         if (borrowedBooks.size() + books.size() > 5) {
-            System.out.println("You cannot loan more than 5 books in total");
+            System.out.println("En fazla 5 kitap ödünç alabilirsiniz.");
             return;
         }
 
-        for (Book book : books) {
-            for (User user : library.getUsers().values()) {
-                if (user.getBorrowedBooks().contains(book)) {
-                    System.out.println("Book '" + book.getName() + "' is already loaned by user: " + user.getName());
-                    return;
-                }
+        // User bilgisi paylaşılmamalı
+
+//        for (Book book : books) {
+//            for (User user : library.getUsers().values()) {
+//                if (user.getBorrowedBooks().contains(book)) {
+//                    System.out.println("Book '" + book.getName() + "' is already loaned by user: " + user.getName());
+//                    return;
+//                }
+//            }
+//        }
+
+        for(Book book : books) {
+            if (!book.isAvailable()) {
+                System.out.println("Kitap şu anda mevcut değil: " + book.getName());
+                return;
             }
         }
 
@@ -96,14 +111,15 @@ public class User extends Person {
     public void returnBooks(List<Book> books) {
         for (Book book : books) {
             if (!borrowedBooks.contains(book)) {
-                System.out.println("You have not loaned the book: " + book.getName());
+                System.out.println("Bu kitaba sahip değilsiniz: " + book.getName());
                 return;
             }
         }
 
-        double totalRefund = books.stream()
-                .mapToDouble(book -> book.getUnitPrice())
-                .sum();
+        double totalRefund = 0.0;
+        for (Book book : books) {
+            totalRefund += book.getUnitPrice();
+        }
 
         for (Book book : books) {
             borrowedBooks.remove(book);
@@ -141,4 +157,6 @@ public class User extends Person {
     public List<Book> findBooksByCategory(String categoryName) {
         return super.findBooksByCategory(categoryName);
     }
+
+
 }

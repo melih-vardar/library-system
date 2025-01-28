@@ -9,15 +9,30 @@ public class Book {
     private double unitPrice;
 
     Book(Admin creator, String name, String author, Category category, double unitPrice) {
-        if (creator == null) {
-            throw new IllegalArgumentException("Books can only be created by Admin!");
-        }
         this.id = ++lastId;
+        
+        if (creator == null) {
+            System.out.println("Kitaplar sadece Admin tarafından oluşturulabilir!");
+            return;
+        }
+        if (name == null || name.trim().isEmpty()) {
+            System.out.println("Kitap adı boş olamaz!");
+            return;
+        }
+        if (category == null) {
+            System.out.println("Kategori boş olamaz!");
+            return;
+        }
+        if (unitPrice < 0) {
+            System.out.println("Fiyat negatif olamaz!");
+            return;
+        }
+
         this.name = name;
         this.author = author;
         this.category = category;
         this.unitPrice = unitPrice;
-        available = true;
+        this.available = true;
     }
 
 
