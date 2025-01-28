@@ -8,7 +8,6 @@ public class User extends Person {
     private Set<Book> borrowedBooks;
     private double balance;
 
-    // Package-private friend constructor
     User(Admin creator, String tckno, String name, String surname, int age, double balance, Library library) {
         super(tckno, name, surname, age, library);
         
@@ -96,7 +95,7 @@ public class User extends Person {
             false,
             totalCost
         );
-        library.getInvoices().add(invoice);
+        getLibrary().getInvoices().add(invoice);
         System.out.println("Fatura oluşturuldu:\n" + invoice);
     }
 
@@ -134,7 +133,7 @@ public class User extends Person {
             true,
             totalRefund
         );
-        library.getInvoices().add(invoice);
+        getLibrary().getInvoices().add(invoice);
         System.out.println("İade faturası oluşturuldu:\n" + invoice);
     }
 

@@ -9,7 +9,7 @@ public abstract class Person implements IBorrow {
     private String name;
     private String surname;
     private int age;
-    protected Library library;  // library'i protected yapıyoruz ki alt sınıflar erişebilsin
+    private Library library;
 
     public Person(String tckno, String name, String surname, int age, Library library) {
         this.id = ++lastId;
@@ -60,6 +60,10 @@ public abstract class Person implements IBorrow {
 
     public String getName() {
         return name;
+    }
+
+    public Library getLibrary() {
+        return library;
     }
 
     // Arama metodları
