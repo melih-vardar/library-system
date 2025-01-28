@@ -14,6 +14,7 @@ public class Main {
             System.out.println("1. Misafir olarak devam et");
             System.out.println("2. Üye olarak devam et");
             System.out.println("3. Admin olarak devam et");
+            System.out.println("4. Yeni üye kaydı");
             System.out.println("0. Çıkış");
             System.out.print("Seçiminiz: ");
 
@@ -31,6 +32,9 @@ public class Main {
                     break;
                 case 3:
                     handleAdminOperations(scanner, library);
+                    break;
+                case 4:
+                    handleUserRegistration(scanner, library);
                     break;
                 default:
                     System.out.println("Geçersiz seçim!");
@@ -87,19 +91,21 @@ public class Main {
     }
 
     private static void handleUserOperations(Scanner scanner, Library library) {
-        System.out.print("TC Kimlik No: ");
-        String tckno = scanner.nextLine();
+        System.out.print("Kullanıcı adı: ");
+        String username = scanner.nextLine();
+        System.out.print("Şifre: ");
+        String password = scanner.nextLine();
         
         User user = null;
         for (User u : library.getUsers().values()) {
-            if (u.getTckno().equals(tckno)) {
+            if (u.getUsername().equals(username) && u.getPassword().equals(password)) {
                 user = u;
                 break;
             }
         }
 
         if (user == null) {
-            System.out.println("Kullanıcı bulunamadı!");
+            System.out.println("Geçersiz kullanıcı adı veya şifre!");
             return;
         }
 
@@ -179,19 +185,21 @@ public class Main {
     }
 
     private static void handleAdminOperations(Scanner scanner, Library library) {
-        System.out.print("TC Kimlik No: ");
-        String tckno = scanner.nextLine();
+        System.out.print("Kullanıcı adı: ");
+        String username = scanner.nextLine();
+        System.out.print("Şifre: ");
+        String password = scanner.nextLine();
         
         Admin admin = null;
         for (Admin a : library.getAdmins().values()) {
-            if (a.getTckno().equals(tckno)) {
+            if (a.getUsername().equals(username) && a.getPassword().equals(password)) {
                 admin = a;
                 break;
             }
         }
 
         if (admin == null) {
-            System.out.println("Admin bulunamadı!");
+            System.out.println("Geçersiz kullanıcı adı veya şifre!");
             return;
         }
         
@@ -277,6 +285,10 @@ public class Main {
                 case 7:
                     System.out.print("TC Kimlik No: ");
                     String newTckno = scanner.nextLine();
+                    System.out.println("Kullanıcı adı: ");
+                    String newUsername = scanner.nextLine();
+                    System.out.print("Şifre: ");
+                    String newPassword = scanner.nextLine();
                     System.out.print("Ad: ");
                     String newName = scanner.nextLine();
                     System.out.print("Soyad: ");
@@ -285,7 +297,7 @@ public class Main {
                     int newAge = scanner.nextInt();
                     scanner.nextLine();
                     
-                    admin.createAdmin(newTckno, newName, newSurname, newAge);
+                    admin.createAdmin(newTckno, newUsername, newPassword, newName, newSurname, newAge);
                     System.out.println(library.getAdmins());
                     break;
                 case 8:
@@ -301,6 +313,49 @@ public class Main {
                 default:
                     System.out.println("Geçersiz seçim!");
             }
+        }
+    }
+
+    private static void handleUserRegistration(Scanner scanner, Library library) {
+        System.out.println("\n=== Yeni Üye Kaydı ===");
+        
+        try {
+            System.out.print("TC Kimlik No (11 haneli): ");
+            String tckno = scanner.nextLine();
+            
+            System.out.print("Kullanıcı adı: ");
+            String username = scanner.nextLine();
+            
+            // Kullanıcı adı kontrolü
+            for (User existingUser : library.getUsers().values()) {
+                if (existingUser.getUsername().equals(username)) {
+                    System.out.println("Bu kullanıcı adı zaten kullanılıyor!");
+                    return;
+                }
+            }
+            
+            System.out.print("Şifre (en az 6 karakter): ");
+            String password = scanner.nextLine();
+            
+            System.out.print("Ad: ");
+            String name = scanner.nextLine();
+            
+            System.out.print("Soyad: ");
+            String surname = scanner.nextLine();
+            
+            System.out.print("Yaş: ");
+            int age = scanner.nextInt();
+            
+            System.out.print("Başlangıç bakiyesi: ");
+            double balance = scanner.nextDouble();
+            scanner.nextLine();
+
+            User newUser = new User(tckno, username, password, name, surname, age, balance, library);
+            library.getUsers().put(newUser.getId(), newUser);
+            
+            System.out.println("Üye kaydınız başarıyla tamamlandı!");
+        } catch (IllegalArgumentException e) {
+            System.out.println("Hata: " + e.getMessage());
         }
     }
 
@@ -321,15 +376,15 @@ public class Main {
     }
 
     private static void initializeLibrary(Library library) {
-        Admin admin = new Admin("99999999999", "Admin", "Admin", 30, library);
+        Admin admin = new Admin("99999999999", "admin", "admin123", "Admin", "Admin", 30, library);
         library.getAdmins().put(admin.getId(), admin);
         
         admin.createBook("1984", "George Orwell", "Kurgu", 25.0);
         admin.createBook("Kozmos", "Carl Sagan", "Bilim", 35.0);
         admin.createBook("Nutuk", "Mustafa Kemal Atatürk", "Tarih", 40.0);
 
-        admin.createUser("12345678901", "Ahmet", "Yılmaz", 25, 100.0);
-
+        User demoUser = new User("12345678901", "user1", "pass123", "Ahmet", "Yılmaz", 25, 100.0, library);
+        library.getUsers().put(demoUser.getId(), demoUser);
     }
 
 }

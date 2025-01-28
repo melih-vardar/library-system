@@ -1,8 +1,8 @@
 import java.util.List;
 
 public class Admin extends Person {
-    public Admin(String tckno, String name, String surname, int age, Library library) {
-        super(tckno, name, surname, age, library);
+    public Admin(String tckno, String username, String password, String name, String surname, int age, Library library) {
+        super(tckno, username, password, name, surname, age, library);
     }
 
     public void addCategory(Category category) {
@@ -68,51 +68,6 @@ public class Admin extends Person {
         return super.findBooksByCategory(categoryName);
     }
 
-    public User createUser(String tckno, String name, String surname, int age, double initialBalance) {
-        try {
-            for (User existingUser : getLibrary().getUsers().values()) {
-                if (existingUser.getTckno().equals(tckno)) {
-                    throw new IllegalStateException("Bu TC Kimlik No'ya sahip bir kullanıcı zaten mevcut!");
-                }
-            }
-
-            User user = new User(this, tckno, name, surname, age, initialBalance, getLibrary());
-            addUser(user);
-            return user;
-        } catch (IllegalArgumentException | IllegalStateException e) {
-            System.out.println(e.getMessage());
-            return null;
-        }
-    }
-
-    public void addUser(User user) {
-
-        if (getLibrary().getUsers().containsKey(user.getId())) {
-            System.out.println("Kullanıcı zaten mevcut");
-        } else {
-            getLibrary().getUsers().put(user.getId(), user);
-            System.out.println("Kullanıcı kütüphaneye başarıyla eklendi. Kullanıcı adı: " + user.getName());
-        }
-    }
-
-    public void removeUser(User user) {
-        if (getLibrary().getUsers().containsKey(user.getId())) {
-            getLibrary().getUsers().remove(user.getId());
-            System.out.println("Kullanıcı başarıyla silindi");
-        } else {
-            System.out.println("Kullanıcı bulunamadı");
-        }
-    }
-
-    public void updateUser(User user) {
-        if (getLibrary().getUsers().containsKey(user.getId())) {
-            getLibrary().getUsers().put(user.getId(), user);
-            System.out.println("Kullanıcı başarıyla güncellendi");
-        } else {
-            System.out.println("Kullanıcı bulunamadı");
-        }
-    }
-
     public Book createBook(String name, String author, String categoryName, double unitPrice) {
         Category category = null;
         for (Category existingCategory : getLibrary().getCategories()) {
@@ -137,15 +92,15 @@ public class Admin extends Person {
         return category;
     }
 
-    public Admin createAdmin(String tckno, String name, String surname, int age) {
+    public Admin createAdmin(String tckno, String username, String password, String name, String surname, int age) {
         try {
             for (Admin existingAdmin : getLibrary().getAdmins().values()) {
-                if (existingAdmin.getTckno().equals(tckno)) {
-                    throw new IllegalStateException("Bu TC Kimlik No'ya sahip bir admin zaten mevcut!");
+                if (existingAdmin.getUsername().equals(username)) {
+                    throw new IllegalStateException("Bu kullanıcı adı zaten kullanılıyor!");
                 }
             }
 
-            Admin newAdmin = new Admin(tckno, name, surname, age, getLibrary());
+            Admin newAdmin = new Admin(tckno, username, password, name, surname, age, getLibrary());
             addAdmin(newAdmin);
             return newAdmin;
         } catch (IllegalArgumentException | IllegalStateException e) {

@@ -8,12 +8,9 @@ public class User extends Person {
     private Set<Book> borrowedBooks;
     private double balance;
 
-    User(Admin creator, String tckno, String name, String surname, int age, double balance, Library library) {
-        super(tckno, name, surname, age, library);
+    User(String tckno, String username, String password, String name, String surname, int age, double balance, Library library) {
+        super(tckno, username, password, name, surname, age, library);
         
-        if (creator == null) {
-            throw new IllegalArgumentException("Kullanıcılar sadece Admin tarafından oluşturulabilir!");
-        }
         if (balance < 0) {
             throw new IllegalArgumentException("Bakiye negatif olamaz!");
         }

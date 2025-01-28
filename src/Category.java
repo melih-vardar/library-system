@@ -8,12 +8,10 @@ public class Category {
         this.id = ++lastId;
         
         if (creator == null) {
-            System.out.println("Kategoriler sadece Admin tarafından oluşturulabilir!");
-            return;
+            throw new IllegalArgumentException("Kategoriler sadece Admin tarafından oluşturulabilir!");
         }
         if (name == null || name.trim().isEmpty()) {
-            System.out.println("Kategori adı boş olamaz!");
-            return;
+            throw new IllegalArgumentException("Kategori adı boş olamaz!");
         }
 
         this.name = name;

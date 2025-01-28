@@ -6,16 +6,24 @@ public abstract class Person implements IBorrow {
     private static int lastId = 0;
     private final int id;
     private String tckno;
+    private String username;
+    private String password;
     private String name;
     private String surname;
     private int age;
     private Library library;
 
-    public Person(String tckno, String name, String surname, int age, Library library) {
+    public Person(String tckno, String username, String password, String name, String surname, int age, Library library) {
         this.id = ++lastId;
         
         if (tckno == null || tckno.length() != 11 || !tckno.matches("\\d+")) {
             throw new IllegalArgumentException("TC Kimlik No 11 haneli rakamlardan oluşmalıdır!");
+        }
+        if (username == null || username.trim().isEmpty()) {
+            throw new IllegalArgumentException("Kullanıcı adı boş olamaz!");
+        }
+        if (password == null || password.length() < 6) {
+            throw new IllegalArgumentException("Şifre en az 6 karakter olmalıdır!");
         }
         if (name == null || name.trim().isEmpty()) {
             throw new IllegalArgumentException("İsim boş olamaz!");
@@ -31,6 +39,8 @@ public abstract class Person implements IBorrow {
         }
         
         this.tckno = tckno;
+        this.username = username;
+        this.password = password;
         this.name = name;
         this.surname = surname;
         this.age = age;
@@ -71,6 +81,14 @@ public abstract class Person implements IBorrow {
 
     public Library getLibrary() {
         return library;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 
     // Arama metodları
