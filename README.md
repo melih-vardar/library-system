@@ -1,77 +1,52 @@
-# Kütüphane Yönetim Sistemi
+# Library Management System
 
-Bu proje, bir kütüphanenin temel işlevlerini yerine getiren bir yönetim sistemidir. Sistem üç farklı kullanıcı tipi (Misafir, Üye ve Admin) için farklı yetkiler ve işlevler sunar.
+This project is a management system that performs the core functions of a library. The system provides essential functionalities for efficient management of library resources. It provides different permissions and features for three user types: Guest, Member, and Admin.
 
 ![Class Diagram](./docs/uml/diagram.png)
 
-## Özellikler
+🔑 Key Features:
+- Book management (add, remove, update, search)
+- Category management
+- User and admin management
+- Book borrowing/return system
+- Automated invoice generation
+- Balance tracking system
 
-### Kitap Yönetimi
-- ✅ Yeni kitap ekleme (Admin)
-- ✅ Kitap bilgilerini güncelleme (Admin)
-- ✅ Kitap silme (Admin)
-- ✅ Kitap arama:
-  - ID'ye göre
-  - İsme göre
-  - Yazara göre
-  - Kategoriye göre
+⚙️ Technical Details:
+- Object-oriented programming principles (inheritance, encapsulation, polymorphism)
+- Interface implementation
+- Exception handling
+- Collection framework (HashMap, ArrayList, HashSet)
+- Clean code practices
 
-### Kategori Yönetimi
-- ✅ Yeni kategori ekleme (Admin)
-- ✅ Kategoriye göre kitap listeleme
-- ✅ Tüm kategorileri görüntüleme
+## System Features
 
-### Ödünç Alma Sistemi
-- ✅ Kitap ödünç alma (Üye)
-- ✅ Kitap iade etme (Üye)
-- ✅ Kullanıcı başına maksimum 5 kitap limiti
-- ✅ Otomatik fatura oluşturma:
-  - Ödünç alma işleminde ücret tahsili
-  - İade işleminde ücret iadesi
+### Book Management
+- ✅ Add new books (Admin)
+- ✅ Update book information (Admin)
+- ✅ Remove books (Admin)
+- ✅ Search books by:
+  - ID
+  - Name
+  - Author
+  - Category
 
-### Kullanıcı Yönetimi
-- ✅ Farklı kullanıcı tipleri:
-  - Misafir (sadece arama yapabilir)
-  - Üye (ödünç alma ve iade işlemleri yapabilir)
-  - Admin (tüm yönetim işlemlerini yapabilir)
-- ✅ Kullanıcı bakiye takibi
-- ✅ Ödünç alınan kitapların takibi
+### User Types and Permissions
+- Guest: Can only search and view books
+- Member: Can borrow/return books and manage their account
+- Admin: Has full system management privileges
 
-## Kullanım
+### Borrowing System
+- ✅ Borrow books (Member)
+- ✅ Return books (Member)
+- ✅ Maximum 5 books per user
+- ✅ Automated invoice generation for:
+  - Borrowing transactions
+  - Return transactions
 
-### Misafir Olarak
-- Kitap arama yapabilir.
-- Mevcut kitapları görüntüleyebilir.
-- Ödünç alma işlemi yapamaz.
+## Initial Setup
 
-### Üye Olarak
-- Tüm arama işlemlerini yapabilir.
-- Kitap ödünç alabilir (bakiye ve limit dahilinde).
-- Kitap iade edebilir.
-- Kendi ödünç aldığı kitapları listeleyebilir.
-- Bakiye görüntüleyebilir.
-
-### Admin Olarak
-- Kitap ekleyebilir, güncelleyebilir, silebilir.
-- Kategori ekleyebilir.
-- Tüm kitap ve kategori listelerini görüntüleyebilir.
-- Tüm arama işlemlerini yapabilir.
-
-## Teknik Detaylar
-
-### Fatura Sistemi
-- Her ödünç alma işleminde otomatik fatura oluşturulur.
-- Her iade işleminde iade faturası oluşturulur.
-- Faturalar tarih, işlem tipi, kullanıcı bilgisi ve tutar bilgilerini içerir.
-
-### Kısıtlamalar
-- Bir kullanıcı maksimum 5 kitap ödünç alabilir.
-- Kullanıcının bakiyesi kitap ücretini karşılamalıdır.
-- Bir kitap aynı anda birden fazla kullanıcıya ödünç verilemez.
-
-## Başlangıç
-
-Sistem başlatıldığında örnek verilerle birlikte gelir:
-- Temel kategoriler (Kurgu, Bilim, Tarih)
-- Örnek kitaplar
-- Test kullanıcısı (ID: 1, Bakiye: 100 TL) 
+The system comes with sample data:
+- Basic categories (Fiction, Science, History)
+- Sample books
+- Test user (ID: 1, Balance: 100) 
